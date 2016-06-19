@@ -6,14 +6,11 @@ public class PID {
     private float kp;
     private float ki;
     private float kd;
-    private float deltaT;
+    // 計測結果から、msオーダー以下の非常に小さい値。100usとした
+    private final float deltaT = 0.0001F;
 
     public PID() {
         diff = new float[2];
-    }
-
-    public void setDeltaT(float deltaT) {
-        this.deltaT = deltaT;
     }
 
     public float pid(float sensorVal, float targetVal) {
@@ -37,5 +34,32 @@ public class PID {
             limitedValue = MIN;
         }
         return limitedValue;
+    }
+
+    public float getKp() {
+        return kp;
+    }
+
+    public PID setKp(float kp) {
+        this.kp = kp;
+        return this;
+    }
+
+    public float getKi() {
+        return ki;
+    }
+
+    public PID setKi(float ki) {
+        this.ki = ki;
+        return this;
+    }
+
+    public float getKd() {
+        return kd;
+    }
+
+    public PID setKd(float kd) {
+        this.kd = kd;
+        return this;
     }
 }
