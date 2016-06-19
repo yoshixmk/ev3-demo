@@ -41,4 +41,14 @@ public class Motor {
     public void rotateTo(int angle){
         motor.rotateTo(angle);
     }
+    
+    public void setSpeedAndForword(float speed){
+        motor.setSpeed(speed);
+        forword();
+    }
+    
+    public void forword(){
+        motor.forward();
+//        motor.endSynchronization();
+    }
 }

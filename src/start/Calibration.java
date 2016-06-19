@@ -14,6 +14,11 @@ public class Calibration {
     private TouchSensor touchSensor;
     private List<Motor> motors;
     private ColorThreshold colorThreshold;
+
+    public ColorThreshold getColorThreshold() {
+        return colorThreshold;
+    }
+
     private ColorSensor colorSensor;
 
     public Calibration() {
@@ -39,25 +44,27 @@ public class Calibration {
 
         float black = 0;
         float white = 0;
+        LCD.drawString("black: ?", 0, 3);
         while (!touchSensor.isTouched()) {
-            black = colorSensor.getValue();
+            black = colorSensor.getBrightness();
         }
+        LCD.drawString("black: " + black, 0, 3);
 
         Delay.msDelay(10);
         while (touchSensor.isTouched());
 
+        LCD.drawString("white: ?", 0, 4);
         while (!touchSensor.isTouched()) {
-            white = colorSensor.getValue();
+            white = colorSensor.getBrightness();
         }
+        LCD.drawString("white: " + white, 0, 4);
 
         colorThreshold = new ColorThreshold(black, white);
 
-        // 10秒間の実行
+        // 5秒間の実行
         long startTime = System.currentTimeMillis();
-        while(System.currentTimeMillis() - startTime < 10000){
+        while (System.currentTimeMillis() - startTime < 5000) {
             LCD.drawString(String.valueOf(touchSensor.isTouched()), 0, 2);
-            LCD.drawString("black: " + black, 0, 3);
-            LCD.drawString("white: " + white, 0, 4);
         }
     }
 }
