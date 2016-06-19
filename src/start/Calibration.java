@@ -3,6 +3,7 @@ package start;
 import java.util.ArrayList;
 import java.util.List;
 
+import hardware.ColorSensor;
 import hardware.Motor;
 import hardware.MotorType;
 import hardware.TouchSensor;
@@ -12,6 +13,8 @@ import lejos.utility.Delay;
 public class Calibration {
     private TouchSensor touchSensor;
     private List<Motor> motors;
+    private ColorThreshold colorThreshold;
+    private ColorSensor colorSensor;
 
     public Calibration() {
         motors = new ArrayList<Motor>() {
@@ -24,19 +27,37 @@ public class Calibration {
             }
         };
         touchSensor = new TouchSensor();
+        colorSensor = new ColorSensor();
     }
 
     public void calibrate() {
         for (Motor m : motors) {
             m.setMediumSpeed();
-            int angle = 30;
+            int angle = 25;
             m.rotateTo(angle);
         }
 
+        float black = 0;
+        float white = 0;
+        while (!touchSensor.isTouched()) {
+            black = colorSensor.getValue();
+        }
+
+        Delay.msDelay(10);
+        while (touchSensor.isTouched());
+
+        while (!touchSensor.isTouched()) {
+            white = colorSensor.getValue();
+        }
+
+        colorThreshold = new ColorThreshold(black, white);
+
         // 10秒間の実行
-        for (int i = 0; i < 10000; i++) {
+        long startTime = System.currentTimeMillis();
+        while(System.currentTimeMillis() - startTime < 10000){
             LCD.drawString(String.valueOf(touchSensor.isTouched()), 0, 2);
-            Delay.msDelay(1);
+            LCD.drawString("black: " + black, 0, 3);
+            LCD.drawString("white: " + white, 0, 4);
         }
     }
 }
