@@ -16,7 +16,7 @@ public class Calibration {
     private Map<String, BaseRegulatedMotor> motors;
 
     public Calibration() {
-        touchSensor = TouchSensor.getInstance();
+//        touchSensor = TouchSensor.getInstance();
         motors = new HashMap<String, BaseRegulatedMotor>() {
             private static final long serialVersionUID = 1L;
             {
